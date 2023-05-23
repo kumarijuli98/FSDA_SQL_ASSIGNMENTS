@@ -1,0 +1,126 @@
+-----TASK 1
+
+
+use"INEURON";
+
+
+create or replace table shopping_history(
+product varchar(10) not null,
+quality int not null,
+unit_price int not null);
+
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('MILK', 3, 10);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('BREAD', 7, 3);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('BREAD', 5, 2);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('SALT', 1, 15);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('BUTTER', 5, 20);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('RICE', 4, 100);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('PLUSE', 4, 3);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('SUGAR', 2, 8);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('SUGAR', 3, 10);
+INSERT INTO shopping_history(product,quality,unit_price) VALUES ('GHEE', 3, 50);
+
+SELECT * FROM shopping_history;
+
+SELECT PRODUCT,(quality*unit_price) AS TOTAL_PRICE FROM shopping_history;
+
+
+----TASK 2
+
+
+CREATE OR REPLACE TABLE PHONES(
+NAME VARCHAR(20) NOT NULL UNIQUE,
+PHONE_NUMBER INT NOT NULL UNIQUE);
+
+
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('JACK', 1234);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('LENA', 4562);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('MARK', 7854);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('ANNA', 4511);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('AMIT', 7844);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('JUHI', 1245);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('SONU', 2356);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('MONU', 8956);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('GOLU', 7845);
+INSERT INTO PHONES(NAME,PHONE_NUMBER) VALUES ('CHOTU',1230);
+
+
+SELECT * FROM PHONES;
+
+
+CREATE OR REPLACE TABLE CALLS(
+ID INT NOT NULL,
+CALLER INT NOT NULL,
+COLLEE INT NOT NULL,
+DURATION INT NOT NULL,
+UNIQUE(ID));
+
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,1234,4562,8);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,4562,7845,2);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,7854,1230,4);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,4511,4562,8);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,7844,4562,6);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,1245,4562,7);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,2356,7854,5);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,7854,7854,4);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,4511,2356,9);
+INSERT INTO CALLS(ID,CALLER,COLLEE,DURATION) VALUES (1,2356,1234,10);
+
+SELECT * FROM CALLS;
+
+
+SELECT NAME
+FROM PHONES P JOIN CALLS C ON P.PHONE_NUMBER = C.CALLER
+GROUP BY NAME
+HAVING SUM(DURATION) >= 10
+ORDER BY NAME ASC;
+
+-----TASK 3
+
+CREATE OR REPLACE TABLE transactions(
+Amount INTEGER NOT NULL,
+Date DATE NOT NULL) ;
+
+SELECT * FROM transactions;
+
+INSERT INTO transactions(Amount,Date)VALUES (1000,'2020-01-06');
+INSERT INTO transactions(Amount,Date)VALUES (-10,'2020-01-14');
+INSERT INTO transactions(Amount,Date)VALUES (-75,'2020-01-20');
+INSERT INTO transactions(Amount,Date)VALUES (-5,'2020-01-25');
+INSERT INTO transactions(Amount,Date)VALUES (-4,'2020-01-29');
+INSERT INTO transactions(Amount,Date)VALUES (2000,'2020-03-10');
+INSERT INTO transactions(Amount,Date)VALUES (-75,'2020-03-12');
+INSERT INTO transactions(Amount,Date)VALUES (-20,'2020-03-15');
+INSERT INTO transactions(Amount,Date)VALUES (40,'2020-03-15');
+INSERT INTO transactions(Amount,Date)VALUES (-50,'2020-03-17');
+INSERT INTO transactions(Amount,Date)VALUES (200,'2020-10-10');
+INSERT INTO transactions(Amount,Date)VALUES (-200,'2020-10-10'); 
+
+SELECT * FROM transactions;
+
+select sum(amount) as balance, count(1), date_part('month', date) as month from transactions 
+where amount < 0 group by month;
+
+
+
+select sum(amount) - 5*(11-
+(select count(*) from(select count(amount),sum(amount) from transactions
+where amount<0 
+group by amount 
+having Count(amount)>=3 and Sum(amount)<=-100))) as balance
+from transactions ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
